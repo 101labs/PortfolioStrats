@@ -6,7 +6,7 @@ import math
 import datetime
 import time
 import os
-
+from multiprocessing import Pool
 
 data_dir = '/home/tianjiawei/PortfolioStrats/data/stock_tick_data'
 sleep_time = 0.2
@@ -70,7 +70,14 @@ def get_all_stock_id():
 
 dates = get_date_list(datetime.date(2017, 10, 30), datetime.date(2018, 6, 14))
 stocks = get_all_stock_id()
-for stock in stocks:
-    for date in dates:
-        if get_save_tick_data(stock, date):
-            time.sleep(sleep_time)
+
+
+pool = Pool(4)
+tasks = [(stock,date) for stock in stocks for date in dates]
+pool.starmap(get_save_tick_data,tasks)
+pool.close()
+
+#for stock in stocks:
+#    for date in dates:
+#        if get_save_tick_data(stock, date):
+#            time.sleep(sleep_time)
