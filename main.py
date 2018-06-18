@@ -33,8 +33,6 @@ def get_min_line(symbol, begin_date, end_date=None):
 					df=df.append(hdf5_file['data'])
 					hdf5_file.close()
 					print("Successfully read min_data_file file: " + min_data_file)
-		print(symbol)
-		print(df)
 		return df
 
 def get_date_list(begin_date, end_date):
@@ -58,7 +56,8 @@ def plot_corr_matrix(begin_date,end_date=None):
 	corr_source_data=pd.DataFrame()
 	for stock in stocks:
 		stockdf=get_min_line(stock,begin_date,end_date)
-		print(stockdf)
+		if stockdf.empty:
+			continue
 		columns = ['high', 'open', 'close', 'volume', 'amount']
 		stockdf.drop(columns, inplace=True, axis=1)
 		stockdf.rename(columns={'low': stock}, inplace=True)
