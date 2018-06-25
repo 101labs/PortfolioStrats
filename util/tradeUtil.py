@@ -79,9 +79,12 @@ def get_stock_operation_value(code, date, direction,amount):
 	#buy_open_price = df.iloc[1]['open']
         closeprice = df.loc[date].close
         buy_open_price = amount*closeprice
+        fee = buy_open_price*commision_percent*0.01
+        if fee<Lowbarrier:
+            fee = Lowbarrier
         if direction == 'short':
             buy_signal = 1
         elif direction == 'long':
             buy_signal = -1
-	return buy_signal*buy_open_price
+	return buy_signal*buy_open_price-fee
 
